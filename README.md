@@ -1,7 +1,7 @@
 # Predicting whether a sequence of heads or tails of length 20 was computer generated or human written
 Given a sequence of heads or tails of length 20, predict whether it was completely random or human written
 ### Inspiration
-The inspiration for this project was a video of a stats professor that had his students flip a coin 100 times and write down the answer. The professor than looked at each person's sequence of heads and tails and tried guessing if his students cheated or not. He guessed with decent accuracy which demonstrated how humans aren't good at faking randomness.
+The inspiration for this project was a video of a stats professor that had his students flip a coin 100 times and write down the answer. The professor then looked at each person's sequence of heads and tails and tried guessing if his students cheated or not. He guessed with decent accuracy which demonstrated how humans aren't good at faking randomness.
 ### About
 This project contains small implementations of different ai algorithms/models as I learn them. Because this is one of my first ai projects, the code and models aren't exactly the best. I'm still learning and as I learn I would like to add new things to this small project. I ran this project locally on a M1 Macbook Pro, resulting in a different tensorflow library (DON'T USE THE REQUIREMENTS.TXT IF NOT ON M1 MAC)
 ### Expectations
