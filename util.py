@@ -2,7 +2,8 @@ import pandas as pd
 import random
 import numpy as np
 from sklearn.model_selection import train_test_split
-from keras.models import Sequential
+from keras.models import Sequential, load_model
+from tensorflow import lite
 random.seed(1)
 
 # Helper Functions
@@ -344,3 +345,29 @@ def load_nn_2_data() -> tuple[np.array, np.array, np.array, np.array]:
         tuple[np.array, np.array, np.array, np.array]: X_train, y_train, X_test, y_test
     """
     return load_logistic_regression_data()
+
+def convert_models() -> None:
+    """Converts saved Keras models into tensorflow lite models
+    """
+    # Load Models
+    logistic = load_model('./models/logistic')
+    nn = load_model('./models/nn')
+    nn_2 = load_model('./models/nn_2')
+    rnn = load_model('./models/rnn')
+    
+    models = [("logistic", logistic), ("nn", nn), ("nn_2", nn_2), ("rnn", rnn)]
+
+    for name, model in models:
+        # Convert models
+        converter = lite.TFLiteConverter.from_keras_model(model)
+        converter.optimizations = [lite.Optimize.DEFAULT]
+        converter.experimental_new_converter = True
+        converter.target_spec.supported_ops = [lite.OpsSet.TFLITE_BUILTINS, lite.OpsSet.SELECT_TF_OPS]
+        
+        # Save models
+        lite_model = converter.convert()
+        with open('lite/' + name + '.tflite', 'wb') as f:
+            f.write(lite_model)
+    
+convert_models()
+    
