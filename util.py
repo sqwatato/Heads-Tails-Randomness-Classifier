@@ -108,18 +108,30 @@ def predict_nn(str:str, model:Sequential) -> None:
     else:
         print(f"Neural Network model's prediction of " + str + ": %.2f%% Computer" % ((1-prediction)*100))
         
-def predict_rnn(str:str, model:Sequential) -> None:
+def predict_rnn(str:str, model:Sequential, model2:Sequential, model3:Sequential) -> None:
     """Prints model prediction and confidence of prediction
 
     Args:
         str (str): sequence to predict
         model (Sequential): rnn model trained for prediction
+        model2 (Sequential): lstm model trained for prediction
+        model3 (Sequential): gru model trained for prediction
     """
     prediction = model.predict((convert_RNN(str),))[0,0]
     if round(prediction) == 1:
         print(f"Recurrent Neural Network model's prediction of " + str + ": %.2f%% Human" % (prediction*100))
     else:
         print(f"Recurrent Neural Network model's prediction of " + str + ": %.2f%% Computer" % ((1-prediction)*100))
+    prediction = model2.predict((convert_RNN(str),))[0,0]
+    if round(prediction) == 1:
+        print(f"LSTM model's prediction of " + str + ": %.2f%% Human" % (prediction*100))
+    else:
+        print(f"LSTM model's prediction of " + str + ": %.2f%% Computer" % ((1-prediction)*100))
+    prediction = model3.predict((convert_RNN(str),))[0,0]
+    if round(prediction) == 1:
+        print(f"GRU model's prediction of " + str + ": %.2f%% Human" % (prediction*100))
+    else:
+        print(f"GRU model's prediction of " + str + ": %.2f%% Computer" % ((1-prediction)*100))
         
 def predict_logistic(str:str, model:Sequential) -> None:
     """Prints model prediction and confidence of prediction
@@ -147,7 +159,7 @@ def predict_nn_2(str:str, model:Sequential) -> None:
     else:
         print(f"Neural Network model with streaks's prediction of " + str + ": %.2f%% Computer" % ((1-prediction)*100))
     
-def predict_all(str:str, logistic:Sequential, nn:Sequential, nn_2:Sequential, rnn:Sequential) -> None:
+def predict_all(str:str, logistic:Sequential, nn:Sequential, nn_2:Sequential, rnn:Sequential, lstm:Sequential, gru:Sequential) -> None:
     """Runs prediction for all models
 
     Args:
@@ -156,11 +168,14 @@ def predict_all(str:str, logistic:Sequential, nn:Sequential, nn_2:Sequential, rn
         nn (Sequential): neural network model with sequence
         nn_2 (Sequential): neural network model with sequence streaks
         rnn (Sequential): recurrent neural network model
+        lstm (Sequential): lstm model
+        gru (Sequential): gru model
+        
     """
     predict_logistic(str, logistic)
     predict_nn(str, nn)
     predict_nn_2(str, nn_2)
-    predict_rnn(str, rnn)
+    predict_rnn(str, rnn, lstm, gru)
     
 
 # Loading Data Functions
@@ -369,5 +384,4 @@ def convert_models() -> None:
         with open('lite/' + name + '.tflite', 'wb') as f:
             f.write(lite_model)
     
-convert_models()
     
